@@ -1,0 +1,76 @@
+/* CRM Container */
+.crm-detail-container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* CRM Title and Info */
+.crm-detail-container h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.crm-detail-container p {
+    font-size: 1.2rem;
+    text-align: center;
+    color: #333;
+    margin: 0.5rem 0;
+}
+
+/* Comments Section */
+.comments-section {
+    margin-top: 2rem;
+}
+
+.comments-section h3 {
+    text-align: left;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #444;
+}
+
+.comment {
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+.comment p {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+
+.comment strong {
+    color: #555;
+}
+
+/* Attachments */
+.attachments-section {
+    margin-top: 1rem;
+}
+
+.attachments-section h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.attachments-section a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-right: 1rem;
+}
+
+.attachments-section a:hover {
+    background-color: #0056b3;
+}

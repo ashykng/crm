@@ -1,0 +1,136 @@
+.logo-img {
+    height: 50px;
+    width: auto;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.3rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0056b3;
+    z-index: -1;
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .4), transparent);
+    transition: .5s;
+}
+
+.header:hover::after {
+    left: 100%;
+}
+
+.logo {
+    font-size: 2rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.navbar {
+    display: flex;
+}
+
+.navbar a {
+    font-size: 1.15rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.navbar a {
+    margin-left: 2.5rem;
+}
+
+#check {
+    display: none;
+}
+
+.icons {
+    right: 5%;
+    position: absolute;
+    font-size: 2.8rem;
+    color: #fff;
+    cursor: pointer;
+    display: none;
+}
+
+@media (max-width: 901px) {
+    .logo:last-of-type {
+        display: none;
+    }
+
+    .header{
+        padding: 1.3rem 5%;
+    }
+    .icons {
+        display: inline-flex;
+    }
+    
+    #check:checked~.icons #menu-icon {
+        display: none;
+    }
+    
+    #check:checked~.icons #close-icon {
+        display: block;
+    }
+    
+    .icons #close-icon {
+        display: none;
+    }
+    
+    .navbar {
+        display: block;
+        z-index: 1000;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: 0;
+        background: rgba(0, 0, 0, .5);
+        background-filter: blur(50px);
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .5);
+        overflow: hidden;
+        transition: .3s ease;
+    }
+    
+    #check:checked~.navbar {
+        height: 18rem;
+    }
+    
+    .navbar a {
+        display: block;
+        font-size: 1.1rem;
+        margin: 1.5rem 0;
+        text-align: center;
+        transform: translateY(-50px);
+        transition: .3s ease;
+    }
+    
+    #check:checked~.navbar a {
+        transform: translateY(0);
+        opacity: 1;
+        transition-delay: calc(.2s * var(--i));
+    }
+}

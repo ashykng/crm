@@ -1,0 +1,263 @@
+.main-container {
+    margin: 5% 0px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+}
+
+.container {
+    height: 600px;
+    width: 450px;
+    border: 2px solid rgba(128, 128, 128, .4);
+    border-radius: 10px;
+    background: rgba(128, 128, 128, .2);
+    backdrop-filter: blur(3px);
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2),
+    0 0 15px rgba(0, 0, 0, .2),
+    0 0 30px rgba(0, 0, 0, .2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.form-box .LoginForm {
+    position: absolute;
+    top: 10%;
+    transform: translateX(-50%) rotate(0deg);
+    transition: .5s ease;
+    transition-delay: .2s;
+}
+
+.form-box .LoginForm.active {
+    top: 10%;
+    transform: translateX(-700px) rotate(-45deg);
+    transition-delay: .1s;
+}
+
+.form-box .RegisterForm {
+    position: absolute;
+    top: 3%;
+    transform: translateX(400px) rotate(45deg);
+    transition: .5s ease;
+    transition-delay: .1s;
+}
+
+.forget-section p {
+    display: flex;
+}
+
+.form-box .RegisterForm.active {
+    top: 3%;
+    transform: translateX(-50%) rotate(0deg);
+    transition-delay: .2s;
+}
+
+.container .form-box h2 {
+    text-align: center;
+    font-size: 40px;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.form-box .input-box {
+    margin: 35px 0;
+    width: 330px;
+    border-bottom: 2px solid rgba(255, 255, 255, .4);
+    position: relative;
+}
+
+.form-box .input-box input {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 40px;
+    padding: 0 35px 0 5px;
+}
+
+.form-box .input-box label {
+    font-weight: 400;
+    letter-spacing: .5px;
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: .5s ease;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+    top: -5px;
+}
+
+.input-box i {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.forget-section {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    align-items: center;
+    margin: -15px 0 15px;
+}
+
+.forget-section p input{
+    accent-color: #0056b3;
+    margin: 0 3px;
+}
+
+.forget-section a {
+    text-decoration: none;
+}
+
+.btn {
+    height: 45px;
+    width: 100%;
+    border-radius: 25px;
+    color: #fff;
+    background: #0056b3;
+    border: 1px solid transparent;
+    outline: none;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, .3);
+    transition: .4s;
+}
+
+.btn:hover {
+    background-color: #fff;
+    color: #0056b3;
+}
+
+.account-creation {
+    text-align: center;
+    margin: 25px 0 10px;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.account-creation span a {
+    text-decoration: none;
+    cursor: pointer;
+    color: #551A8B;
+}
+
+.account-creation a:hover {
+    text-decoration: underline;
+}
+
+@media(max-width: 768px) {
+    .container .form-box h2 {
+        font-size: 32px;
+    }
+
+    .form-box .input-box label {
+        font-size: 14px;
+    }
+
+    .form-box .input-box {
+        margin: 35px 0;
+        width: 300px;
+    }
+
+    .form-box .input-box i {
+        font-size: 18px;
+    }
+
+    .forget-section {
+        font-size: 13px;
+    }
+
+    .btn {
+        height: 40px;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .account-creation {
+        font-size: 13px;
+    }
+}
+
+@media(max-width: 480px) {
+
+    .container .form-box h2 {
+        font-size: 26px;
+    }
+
+    .form-box .input-box label {
+        font-size: 12px;
+    }
+
+    .form-box .input-box {
+        margin: 35px 0;
+        width: 300px;
+    }
+
+    .form-box .input-box i {
+        font-size: 16px;
+    }
+
+    .forget-section {
+        font-size: 11px;
+    }
+
+    .btn {
+        height: 35px;
+        width: 100%;
+        font-size: 12px;
+    }
+
+    .account-creation {
+        font-size: 11px;
+    }
+
+    .forget-section p input{
+        font-size: 10px;
+    }
+}
+
+@media(max-width: 365px) {
+    .container .form-box h2 {
+        font-size: 24px;
+    }
+
+    .form-box .input-box label {
+        font-size: 10px;
+    }
+
+    .form-box .input-box {
+        margin: 25px 0;
+        width: 220px;
+    }
+
+    .form-box .input-box i {
+        font-size: 13px;
+    }
+
+    .forget-section {
+        font-size: 10px;
+    }
+
+    .btn {
+        height: 30px;
+        width: 100%;
+        font-size: 11px;
+    }
+
+    .account-creation {
+        font-size: 10px;
+    }
+
+    .forget-section p input{
+        font-size: 8px;
+    }
+}
