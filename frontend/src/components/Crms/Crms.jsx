@@ -21,8 +21,8 @@ const Crms = () => {
         <a href={`/crm/${crm.id}`} key={crm.id}>  
           <div className="crm">
             <h3>{crm.title}</h3>
-            <p>Number of Comments: {crm.comments.length}</p>
-            <p>Number of Attachments: {crm.attachments.length}</p>
+            <p>تعداد کامنت ها: {crm.comments.length}</p>
+            <p>فایل های ضمیمه: {crm.attachments.length}</p>
           </div>
         </a>
       ))}

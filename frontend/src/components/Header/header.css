@@ -52,15 +52,18 @@
     display: flex;
 }
 
-.navbar a {
+.navbar a, .navbar button {
     font-size: 1.15rem;
     color: #fff;
     text-decoration: none;
     font-weight: 500;
+    margin-left: 2.5rem;
 }
 
-.navbar a {
-    margin-left: 2.5rem;
+.navbar button {
+    cursor: pointer;
+    background: transparent;
+    border: none;
 }
 
 #check {
@@ -116,7 +119,7 @@
     }
     
     #check:checked~.navbar {
-        height: 18rem;
+        height: 7rem;
     }
     
     .navbar a {
@@ -127,7 +130,12 @@
         transform: translateY(-50px);
         transition: .3s ease;
     }
-    
+
+    .navbar button {
+        display: block;
+        margin: 0 auto;
+    }
+
     #check:checked~.navbar a {
         transform: translateY(0);
         opacity: 1;

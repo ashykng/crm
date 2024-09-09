@@ -87,22 +87,22 @@ const Crm = () => {
   return (
     <div className="crm-container">
       <h2>{crm.title}</h2>
-      <p>Created: {crm.created_datetime ? new Date(crm.created_datetime).toLocaleString() : 'Unknown'}</p>
-      <p>Authenticated Users: {crm.authenticated_user_names ? crm.authenticated_user_names.join(', ') : 'No authenticated users'}</p>
+      <p>ایجاد شده در: {crm.created_datetime ? new Date(crm.created_datetime).toLocaleString() : 'Unknown'}</p>
+      <p>کاربران دارای دسترسی: {crm.authenticated_user_names ? crm.authenticated_user_names.join(', ') : 'No authenticated users'}</p>
 
       <div className="comments-section">
-        <h3>Comments</h3>
+        <h3>کامنت ها</h3>
         {crm.comments && crm.comments.length > 0 ? (
           crm.comments.map((comment, index) => (
             <div key={index} className="comment">
               <p><strong>{comment.user}:</strong> {comment.comment}</p>
-              <p>Date: {new Date(comment.created_datetime).toLocaleString()}</p>
+              <p>ایجاد شده در: {new Date(comment.created_datetime).toLocaleString()}</p>
               {comment.attachments && comment.attachments.length > 0 && (
                 <div className="attachments-section">
-                  <h4>Attachments:</h4>
+                  <h4>فایل های ضمیمه</h4>
                   {comment.attachments.map((attachment, idx) => (
                     <a key={idx} href={attachment.file} target="_blank" rel="noopener noreferrer">
-                      View Attachment
+                      فایل ضمیمه
                     </a>
                   ))}
                 </div>
@@ -110,7 +110,7 @@ const Crm = () => {
             </div>
           ))
         ) : (
-          <p>No Comments</p>
+          <p>بدون کامنت</p>
         )}
       </div>
 
@@ -122,15 +122,15 @@ const Crm = () => {
           required
         />
         <br /> <br />
-        <button type="submit">Submit Comment</button>
+        <button type="submit">ثبت کامنت</button>
       </form>
 
       {crm.attachments && crm.attachments.length > 0 && (
         <div className="attachments-section">
-          <h3>Attachments</h3>
+          <h3>فایل های ضمیمه</h3>
           {crm.attachments.map((attachment, index) => (
             <a key={index} href={attachment.file} target="_blank" rel="noopener noreferrer">
-              View Attachment
+              فایل ضمیمه
             </a>
           ))}
         </div>

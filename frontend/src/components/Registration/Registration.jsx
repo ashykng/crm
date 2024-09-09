@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './registration.css';
 import 'boxicons/css/boxicons.min.css';
@@ -7,6 +7,15 @@ import axios from 'axios';
 const Login = () => {
   const [loginData, setLoginData] = useState({ username: '', password: '' });
   const navigate = useNavigate(); // Hook for navigation
+
+  // Check for authToken in localStorage
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      // If token exists, redirect to home
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -30,7 +39,7 @@ const Login = () => {
       <div className="container">
         <div className="form-box">
           <form onSubmit={handleLoginSubmit} className="LoginForm">
-            <h2>Login</h2>
+            <h2>ورود</h2>
             <div className="input-box">
               <input
                 type="text"
@@ -39,7 +48,7 @@ const Login = () => {
                 onChange={handleLoginChange}
                 required
               />
-              <label>Username</label>
+              <label>نام کاربری</label>
               <i className="bx bxs-phone"></i>
             </div>
             <div className="input-box">
@@ -50,11 +59,11 @@ const Login = () => {
                 onChange={handleLoginChange}
                 required
               />
-              <label>Password</label>
+              <label>رمز عبور</label>
               <i className="bx bx-lock"></i>
             </div>
             <button type="submit" className="btn">
-              Sign in
+              ورود
             </button>
           </form>
         </div>

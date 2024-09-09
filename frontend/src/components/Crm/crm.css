@@ -43,7 +43,7 @@
 }
 
 .comment p {
-    font-size: 1rem;
+    font-size: .9rem;
     margin: 0.5rem 0;
 }
 
@@ -73,4 +73,9 @@
 
 .attachments-section a:hover {
     background-color: #0056b3;
+}
+
+form textarea {
+    width: 15rem;
+    height: 5rem;
 }
