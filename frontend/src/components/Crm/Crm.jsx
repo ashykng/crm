@@ -88,6 +88,16 @@ const Crm = () => {
       <p>ایجاد شده در: {crm.created_datetime ? new Date(crm.created_datetime).toLocaleString() : 'Unknown'}</p>
       <p>کاربران دارای دسترسی: {crm.authenticated_user_names ? crm.authenticated_user_names.join(', ') : 'No authenticated users'}</p>
 
+      {crm.attachments && crm.attachments.length > 0 && (
+        <div className="attachments-section">
+          <h3>فایل های ضمیمه</h3>
+          {crm.attachments.map((attachment, index) => (
+            <a key={index} href={attachment.file} target="_blank" rel="noopener noreferrer">
+              فایل ضمیمه
+            </a>
+          ))}
+        </div>
+      )}
       <div className="comments-section">
         <h3>کامنت ها</h3>
         {crm.comments && crm.comments.length > 0 ? (
@@ -116,23 +126,12 @@ const Crm = () => {
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder="Add your comment"
+          placeholder="کامنت خود را بگذارید  "
           required
         />
         <br /> <br />
-        <button type="submit">ثبت کامنت</button>
+        <button type="submit">ثبت</button>
       </form>
-
-      {crm.attachments && crm.attachments.length > 0 && (
-        <div className="attachments-section">
-          <h3>فایل های ضمیمه</h3>
-          {crm.attachments.map((attachment, index) => (
-            <a key={index} href={attachment.file} target="_blank" rel="noopener noreferrer">
-              فایل ضمیمه
-            </a>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
