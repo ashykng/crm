@@ -21,7 +21,7 @@ const Crm = () => {
       })
       .catch(error => {
         console.error('Error fetching CRM data:', error);
-        setError('Error fetching CRM data');
+        setError('خطا در دریافت اطلاعات');
         setLoading(false);
       });
   }, [id]);
@@ -38,8 +38,6 @@ const Crm = () => {
       String(currentDatetime.getMinutes()).padStart(2, '0') + ':' + 
       String(currentDatetime.getSeconds()).padStart(2, '0');
 
-    console.log('Formatted date:', formattedDate);
-
     // Prepare the FormData
     const formData = new FormData();
     formData.append('comment', comment);
@@ -54,7 +52,6 @@ const Crm = () => {
       },
     })
     .then(response => {
-      console.log('Comment submitted successfully:', response.data);
       
       // Update the CRM with the new comment
       setCrm(prevCrm => ({
@@ -65,8 +62,7 @@ const Crm = () => {
       setAttachments([]);
     })
     .catch(error => {
-      console.error('Error posting comment:', error);
-      setError('Error posting comment');
+      setError('!مشکلی در ثبت کامنت رخ داده');
     });
   };
 

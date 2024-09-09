@@ -27,7 +27,6 @@ const Login = () => {
       const response = await axios.post('http://localhost:8000/token/', loginData);
       const { token } = response.data;
       localStorage.setItem('authToken', token);
-      console.log('Login successful!');
       navigate('/'); // Redirect to home page after successful login
     } catch (error) {
       console.error('Login failed:', error);
