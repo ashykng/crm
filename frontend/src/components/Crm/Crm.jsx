@@ -13,7 +13,6 @@ const Crm = () => {
   const [token, setToken] = useState(localStorage.getItem('authToken') || ''); // Assuming token is stored in localStorage
 
   useEffect(() => {
-    console.log(`Fetching CRM data for ID: ${id}`);
     axios.get(`http://localhost:8000/api/crm/${id}`)
       .then(response => {
         console.log('CRM data received:', response.data);
@@ -47,7 +46,6 @@ const Crm = () => {
     formData.append('crm', id);
     formData.append('created_datetime', formattedDate);
     formData.append('token', token);
-    formData.append('attachments', '[]')
 
     // Send the POST request
     axios.post(`http://localhost:8000/api/comment/`, formData, {
