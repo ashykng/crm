@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import (
-    CRM, Comment, Attachment
-)
+from .models import CRM, Comment, Attachment
 
 User = get_user_model()
 
@@ -15,7 +13,7 @@ class CommentSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     token = serializers.CharField(write_only=True)
     created_datetime = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
-    attachments = AttachmentSerializer(many=True, read_only=True)  # This should be writable
+    attachments = AttachmentSerializer(many=True, read_only=True)  # Use AttachmentSerializer to include full attachment details
 
     class Meta:
         model = Comment
@@ -48,9 +46,13 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         token = validated_data.pop('token', None)
-        attachments = validated_data.pop('attachments', [])
         comment = Comment.objects.create(**validated_data)
+
+        # Handle attachments based on their `id`
+        attachments_ids = self.context['request'].data.get('attachments', [])
+        attachments = Attachment.objects.filter(id__in=attachments_ids)
         comment.attachments.set(attachments)
+
         return comment
 
 class CRMSerializer(serializers.ModelSerializer):

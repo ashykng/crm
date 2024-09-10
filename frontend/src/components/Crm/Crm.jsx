@@ -43,11 +43,11 @@ const Crm = () => {
         },
       });
 
-      // Adjust this part based on the actual response structure
+      // Extract attachment IDs from the response
       if (Array.isArray(response.data)) {
-        return response.data; // Return the whole attachment objects
+        return response.data.map(attachment => attachment.id); // Return IDs
       } else if (response.data.attachments && Array.isArray(response.data.attachments)) {
-        return response.data.attachments; // Return attachments array from the response
+        return response.data.attachments.map(attachment => attachment.id); // Return IDs
       } else {
         console.error('Unexpected response structure:', response.data);
         return [];
@@ -60,33 +60,30 @@ const Crm = () => {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
-
-    // Get the current date and time
+  
     const currentDatetime = new Date();
     const formattedDate = `${currentDatetime.getFullYear()}-${String(currentDatetime.getMonth() + 1).padStart(2, '0')}-${String(currentDatetime.getDate()).padStart(2, '0')} ${String(currentDatetime.getHours()).padStart(2, '0')}:${String(currentDatetime.getMinutes()).padStart(2, '0')}:${String(currentDatetime.getSeconds()).padStart(2, '0')}`;
-
-    // Prepare the FormData
+  
     const formData = new FormData();
     formData.append('comment', comment);
     formData.append('crm', id);
     formData.append('created_datetime', formattedDate);
     formData.append('token', token);
-
+  
     try {
-      // Check if there are files to upload
       let attachments = [];
       if (files.length > 0) {
         attachments = await handleFileUpload();
-        formData.append('attachments', JSON.stringify(attachments)); // Pass the whole attachments data
+        // Append each attachment ID individually
+        attachments.forEach(id => formData.append('attachments[]', id));
       }
-
+  
       const response = await axios.post(`http://localhost:8000/api/comment/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      // Update the CRM with the new comment
+  
       setCrm(prevCrm => ({
         ...prevCrm,
         comments: [...prevCrm.comments, response.data],
@@ -163,16 +160,15 @@ const Crm = () => {
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder="کامنت خود را بگذارید"
-          required
+          placeholder="کامنت خود را وارد کنید"
         />
-        <br /> <br />
+        <br /><br />
         <input
           type="file"
           multiple
           onChange={handleFileChange}
         />
-        <br /> <br />
+        <br /><br />
         <button type="submit">ثبت</button>
       </form>
     </div>
