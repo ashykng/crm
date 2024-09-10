@@ -16,7 +16,6 @@ const Crm = () => {
   useEffect(() => {
     axios.get(`http://localhost:8000/api/crm/${id}`)
       .then(response => {
-        console.log('CRM data received:', response.data);
         setCrm(response.data);
         setLoading(false);
       })
@@ -43,9 +42,6 @@ const Crm = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      // Log response data to check its structure
-      console.log('File upload response:', response.data);
 
       // Adjust this part based on the actual response structure
       if (Array.isArray(response.data)) {
@@ -77,8 +73,12 @@ const Crm = () => {
     formData.append('token', token);
 
     try {
-      const attachments = await handleFileUpload();
-      formData.append('attachments', JSON.stringify(attachments)); // Pass the whole attachments data
+      // Check if there are files to upload
+      let attachments = [];
+      if (files.length > 0) {
+        attachments = await handleFileUpload();
+        formData.append('attachments', JSON.stringify(attachments)); // Pass the whole attachments data
+      }
 
       const response = await axios.post(`http://localhost:8000/api/comment/`, formData, {
         headers: {
