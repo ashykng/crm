@@ -25,11 +25,13 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8000/token/', loginData);
-      const { token } = response.data;
+      const { token, username } = response.data;
       localStorage.setItem('authToken', token);
+      localStorage.setItem('username', username); // Save username in localStorage
       navigate('/'); // Redirect to home page after successful login
     } catch (error) {
-      console.error('Login failed:', error);
+      // Show alert if login fails
+      alert('مشکلی در لاگین رخ داده است!');
     }
   };
 

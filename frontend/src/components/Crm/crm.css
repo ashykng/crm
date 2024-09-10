@@ -84,7 +84,7 @@ form textarea {
 .crm-container form button {
     height: 45px;
     width: 5rem;
-    border-radius: 25px;
+    border-radius: 10px;
     color: #fff;
     background: #0056b3;
     border: 1px solid transparent;

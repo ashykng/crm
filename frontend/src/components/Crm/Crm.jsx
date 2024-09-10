@@ -9,8 +9,9 @@ const Crm = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [comment, setComment] = useState('');
-  const [attachments, setAttachments] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem('authToken') || ''); // Assuming token is stored in localStorage
+  const [files, setFiles] = useState([]);
+  const [token, setToken] = useState(localStorage.getItem('authToken') || '');
+  const currentUsername = localStorage.getItem('username') || '';
 
   useEffect(() => {
     axios.get(`http://localhost:8000/api/crm/${id}`)
@@ -26,17 +27,47 @@ const Crm = () => {
       });
   }, [id]);
 
-  const handleCommentSubmit = (e) => {
+  const handleFileChange = (e) => {
+    setFiles(Array.from(e.target.files)); // Store selected files
+  };
+
+  const handleFileUpload = async () => {
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append('file', file);
+    });
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/attachment/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      // Log response data to check its structure
+      console.log('File upload response:', response.data);
+
+      // Adjust this part based on the actual response structure
+      if (Array.isArray(response.data)) {
+        return response.data; // Return the whole attachment objects
+      } else if (response.data.attachments && Array.isArray(response.data.attachments)) {
+        return response.data.attachments; // Return attachments array from the response
+      } else {
+        console.error('Unexpected response structure:', response.data);
+        return [];
+      }
+    } catch (error) {
+      console.error('Error uploading files:', error);
+      return [];
+    }
+  };
+
+  const handleCommentSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Get the current date and time
     const currentDatetime = new Date();
-    const formattedDate = currentDatetime.getFullYear() + '-' +
-      String(currentDatetime.getMonth() + 1).padStart(2, '0') + '-' + 
-      String(currentDatetime.getDate()).padStart(2, '0') + ' ' + 
-      String(currentDatetime.getHours()).padStart(2, '0') + ':' + 
-      String(currentDatetime.getMinutes()).padStart(2, '0') + ':' + 
-      String(currentDatetime.getSeconds()).padStart(2, '0');
+    const formattedDate = `${currentDatetime.getFullYear()}-${String(currentDatetime.getMonth() + 1).padStart(2, '0')}-${String(currentDatetime.getDate()).padStart(2, '0')} ${String(currentDatetime.getHours()).padStart(2, '0')}:${String(currentDatetime.getMinutes()).padStart(2, '0')}:${String(currentDatetime.getSeconds()).padStart(2, '0')}`;
 
     // Prepare the FormData
     const formData = new FormData();
@@ -45,25 +76,26 @@ const Crm = () => {
     formData.append('created_datetime', formattedDate);
     formData.append('token', token);
 
-    // Send the POST request
-    axios.post(`http://localhost:8000/api/comment/`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data', // Important for file uploads
-      },
-    })
-    .then(response => {
-      
+    try {
+      const attachments = await handleFileUpload();
+      formData.append('attachments', JSON.stringify(attachments)); // Pass the whole attachments data
+
+      const response = await axios.post(`http://localhost:8000/api/comment/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
       // Update the CRM with the new comment
       setCrm(prevCrm => ({
         ...prevCrm,
         comments: [...prevCrm.comments, response.data],
       }));
       setComment('');
-      setAttachments([]);
-    })
-    .catch(error => {
+      setFiles([]);
+    } catch (error) {
       setError('!مشکلی در ثبت کامنت رخ داده');
-    });
+    }
   };
 
   if (loading) {
@@ -77,6 +109,14 @@ const Crm = () => {
   if (!crm) {
     return <div>No CRM data found</div>;
   }
+
+  // Determine if the current user is an admin
+  const isAdmin = currentUsername === 'admin';
+
+  // Filter comments: Show all comments if the user is "admin", otherwise show only the user's comments and admin's comments
+  const commentsToShow = isAdmin
+    ? crm.comments
+    : crm.comments.filter(comment => comment.user === currentUsername || comment.user === 'admin');
 
   return (
     <div className="crm-container">
@@ -94,10 +134,11 @@ const Crm = () => {
           ))}
         </div>
       )}
+
       <div className="comments-section">
-        <h3>کامنت ها</h3>
-        {crm.comments && crm.comments.length > 0 ? (
-          crm.comments.map((comment, index) => (
+        <h3>{isAdmin ? 'تمام کامنت ها' : 'کامنت های شما'}</h3>
+        {commentsToShow.length > 0 ? (
+          commentsToShow.map((comment, index) => (
             <div key={index} className="comment">
               <p><strong>{comment.user}:</strong> {comment.comment}</p>
               <p>ایجاد شده در: {new Date(comment.created_datetime).toLocaleString()}</p>
@@ -114,7 +155,7 @@ const Crm = () => {
             </div>
           ))
         ) : (
-          <p>بدون کامنت</p>
+          <p>هیچ کامنتی موجود نیست</p>
         )}
       </div>
 
@@ -122,8 +163,14 @@ const Crm = () => {
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder="کامنت خود را بگذارید  "
+          placeholder="کامنت خود را بگذارید"
           required
+        />
+        <br /> <br />
+        <input
+          type="file"
+          multiple
+          onChange={handleFileChange}
         />
         <br /> <br />
         <button type="submit">ثبت</button>
