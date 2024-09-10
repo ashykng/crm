@@ -35,19 +35,17 @@ const Crm = () => {
     files.forEach((file) => {
       formData.append('file', file);
     });
-
+  
     try {
       const response = await axios.post('http://localhost:8000/api/attachment/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      // Extract attachment IDs from the response
-      if (Array.isArray(response.data)) {
-        return response.data.map(attachment => attachment.id); // Return IDs
-      } else if (response.data.attachments && Array.isArray(response.data.attachments)) {
-        return response.data.attachments.map(attachment => attachment.id); // Return IDs
+  
+      // Extract attachment ID from the response
+      if (response.data && response.data.id) {
+        return [response.data.id]; // Return an array with the single ID
       } else {
         console.error('Unexpected response structure:', response.data);
         return [];
@@ -61,29 +59,34 @@ const Crm = () => {
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
   
+    // Format the current date and time
     const currentDatetime = new Date();
     const formattedDate = `${currentDatetime.getFullYear()}-${String(currentDatetime.getMonth() + 1).padStart(2, '0')}-${String(currentDatetime.getDate()).padStart(2, '0')} ${String(currentDatetime.getHours()).padStart(2, '0')}:${String(currentDatetime.getMinutes()).padStart(2, '0')}:${String(currentDatetime.getSeconds()).padStart(2, '0')}`;
   
-    const formData = new FormData();
-    formData.append('comment', comment);
-    formData.append('crm', id);
-    formData.append('created_datetime', formattedDate);
-    formData.append('token', token);
-  
     try {
-      let attachments = [];
+      // Handle file uploads and get their IDs
+      let attachmentIds = [];
       if (files.length > 0) {
-        attachments = await handleFileUpload();
-        // Append each attachment ID individually
-        attachments.forEach(id => formData.append('attachments[]', id));
+        attachmentIds = await handleFileUpload();
       }
   
-      const response = await axios.post(`http://localhost:8000/api/comment/`, formData, {
+      // Create the comment data object
+      const commentData = {
+        comment: comment,
+        created_datetime: formattedDate,
+        crm: parseInt(id, 10), // Convert id to integer
+        token: token,
+        attachments: attachmentIds // Directly use attachment IDs array
+      };
+  
+      // Post the comment data as JSON
+      const response = await axios.post(`http://localhost:8000/api/comment/`, commentData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json', // Change Content-Type to application/json
         },
       });
   
+      // Update CRM state with the new comment
       setCrm(prevCrm => ({
         ...prevCrm,
         comments: [...prevCrm.comments, response.data],
